@@ -14,7 +14,7 @@ RUN (echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposi
         git curl wget bash nano openrc shadow \
         ca-certificates mariadb-client mysql-client \
     # Nginx
-    && apk add -virtual .nginx \
+    && apk add --virtual .nginx \
         nginx gettext \
     # PHP 7 and Extensions
     && apk add --virtual .php \
