@@ -62,8 +62,8 @@ RUN rm -Rf /etc/nginx && \
     git clone https://github.com/saddam-azad/nginx-configs.git /etc/nginx
 
 ## Override the default PHP configs
-COPY ./config/php.config.ini /etc/php7/conf.d/php.config.ini
-COPY ./config/www.config.conf /etc/php7/php-fpm.d/www.config.conf
+COPY ./php/php.config.ini /etc/php7/conf.d/php.config.ini
+COPY ./php/www.config.conf /etc/php7/php-fpm.d/www.config.conf
 
 ## Ensuring nginx has permission over directories
 RUN chown -R www-data:www-data /var/lib/nginx/ && \
