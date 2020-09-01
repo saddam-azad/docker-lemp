@@ -1,8 +1,5 @@
-#####################################
-#                                   #
-#           Webserver               #
-#                                   #
-#####################################
+# LEMP Webserver
+# Nginx + PHP 7.4 on Alpine Linux
 FROM alpine:edge
 
 ## Install packages
@@ -56,10 +53,6 @@ RUN set -x ; \
     addgroup -g 82 -S www-data ; \
     adduser -u 82 -D -S -G www-data www-data && exit 0 ; exit 1 && \
     usermod -G www-data nginx
-
-## Get the Nginx Configs and replace the default
-RUN rm -Rf /etc/nginx && \ 
-    git clone https://github.com/saddam-azad/nginx-configs.git /etc/nginx
 
 ## Override the default PHP configs
 COPY ./php/php.config.ini /etc/php7/conf.d/php.config.ini
