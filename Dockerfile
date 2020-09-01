@@ -16,9 +16,10 @@ RUN (echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposi
     # PHP 7 and Extensions
     && apk add --virtual .php \
         php7 \
+        php7-fpm \
+        php7-cgi \
         php7-session \
         php7-ctype \
-        php7-fpm \
         php7-json \
         php7-iconv \
         php7-phar \
@@ -33,7 +34,14 @@ RUN (echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposi
         php7-opcache \
         php7-simplexml \
         php7-xmlwriter \
+        php7-xsl \
         php7-openssl \
+        php7-sockets \
+        php7-exif \
+        php7-gettext \
+        php7-intl \
+        php7-posix \
+        php7-zip \
         php7-gd
 
 ## Install composer
