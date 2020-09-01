@@ -76,6 +76,6 @@ COPY ./scripts/ /scripts
 RUN chmod +x /scripts/*.sh
 
 VOLUME ["/var/cache/nginx"]
-EXPOSE 80 443
+EXPOSE 80 443 9000
 
 CMD ["/bin/bash", "/scripts/entrypoint.sh"]
