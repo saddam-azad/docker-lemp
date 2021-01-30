@@ -1,5 +1,6 @@
 # LEMP Webserver
-# Nginx + PHP 7.4 on Alpine Linux
+# Nginx + PHP 8 on Alpine Linux
+# with Composer and WP CLI
 FROM alpine:edge
 
 ## Install packages
@@ -10,51 +11,51 @@ RUN (echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposi
     && apk add --virtual .system \
         git curl wget bash nano openrc shadow \
         ca-certificates mariadb-client mysql-client \
+        supervisor \
     # Nginx
     && apk add --virtual .nginx \
         nginx gettext \
+    # Redis
+    && apk add redis --virtual .redis \
+        redis \
     # PHP 7 and Extensions
     && apk add --virtual .php \
-        php7 \
-        php7-fpm \
-        php7-cgi \
-        php7-session \
-        php7-ctype \
-        php7-json \
-        php7-iconv \
-        php7-phar \
-        php7-dom \
-        php7-bcmath \
-        php7-curl \
-        php7-fileinfo \
-        php7-mbstring \
-        php7-mysqli \
-        php7-xml \
-        php7-tokenizer \
-        php7-opcache \
-        php7-simplexml \
-        php7-xmlwriter \
-        php7-xsl \
-        php7-openssl \
-        php7-sockets \
-        php7-exif \
-        php7-gettext \
-        php7-intl \
-        php7-posix \
-        php7-zip \
-        php7-gd
+        php8 \
+        php8-common \
+        php8-fpm \
+        php8-cgi \
+        php8-session \
+        php8-ctype \
+        php8-iconv \
+        php8-phar \
+        php8-dom \
+        php8-bcmath \
+        php8-curl \
+        php8-fileinfo \
+        php8-mbstring \
+        php8-mysqli \
+        php8-xml \
+        php8-tokenizer \
+        php8-opcache \
+        php8-simplexml \
+        php8-xmlwriter \
+        php8-xsl \
+        php8-openssl \
+        php8-sockets \
+        php8-exif \
+        php8-gettext \
+        php8-intl \
+        php8-posix \
+        php8-zip \
+        php8-gd \
+        php8-pecl-imagick \
+        php8-pecl-redis
 
-## Install composer
-RUN (curl --fail -sS https://getcomposer.org/installer | php) && \
-    chmod +x composer.phar && \
-    mv composer.phar /usr/bin/composer && \
-    composer -V
+RUN ln -s /usr/bin/php8 /usr/bin/php
 
-## Install wp-cli
-RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar \
-    && chmod +x wp-cli.phar \
-    && mv wp-cli.phar /usr/local/bin/wp \ 
-    && wp cli version --allow-root
+## Install composer and WP CLI
+RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar && chmod +x wp-cli.phar && mv wp-cli.phar /usr/local/bin/wp
+RUN php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" && php composer-setup.php --install-dir=/usr/local/bin --filename=composer
 
 ## ensure www-data user/group exists and running at PID/GID 82
 RUN set -x ; \
@@ -63,19 +64,17 @@ RUN set -x ; \
     usermod -G www-data nginx
 
 ## Override the default PHP configs
-COPY ./php/php.config.ini /etc/php7/conf.d/php.config.ini
-COPY ./php/www.config.conf /etc/php7/php-fpm.d/www.config.conf
+COPY ./php/php.ini /etc/php8/conf.d/30-custom.ini
+COPY ./php/fpm.conf /etc/php8/php-fpm.d/www.custom.conf
+
+# Configure supervisord
+COPY ./config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 ## Ensuring nginx has permission over directories
 RUN chown -R www-data:www-data /var/lib/nginx/ && \
 ## Delete the APK cache
     rm -rf /var/cache/apk/*
 
-# Copy in scripts for certbot
-COPY ./scripts/ /scripts
-RUN chmod +x /scripts/*.sh
-
 VOLUME ["/var/cache/nginx"]
-EXPOSE 80 443 9000
-
-CMD ["/bin/bash", "/scripts/entrypoint.sh"]
+EXPOSE 80 443
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
