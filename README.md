@@ -1,2 +1,2 @@
-# docker-lemp
-Alpine Linux, Nginx and PHP 7.4 
+# docker lempserver
+Nginx and PHP 8.0.2 on Alpine Linux
