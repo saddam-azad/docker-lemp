@@ -1,16 +1,20 @@
 FROM php:8.0.2-fpm-alpine AS build
 
 # --- Install system dependencies and mariadb ---
-RUN (echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories) \
-    && apk update \
-    && apk upgrade \
+RUN (echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories) ; \
+    apk update ; \
+    apk upgrade ; \
     # Basic tools
-    && apk add --virtual .system \
+    apk add --virtual .system \
         git curl wget bash nano openrc shadow gnupg py3-setuptools \
         ca-certificates supervisor lvm2 gettext \
+    ; \
     # DB
-    && apk add --virtual .db \
-        mariadb-client mysql-client
+    apk add --virtual .db \
+        mariadb-client \
+    ; \
+    # Install Python supervisor components
+    pip install supervisor
 
 # --- PHP Extensions Installer ---
 #   https://github.com/mlocati/docker-php-extension-installer
