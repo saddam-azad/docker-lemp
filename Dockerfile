@@ -6,7 +6,7 @@ RUN (echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/reposi
     && apk upgrade \
     # Basic tools
     && apk add --virtual .system \
-        git curl wget bash nano openrc shadow gnupg \
+        git curl wget bash nano openrc shadow gnupg py3-setuptools \
         ca-certificates supervisor lvm2 gettext \
     # DB
     && apk add --virtual .db \
