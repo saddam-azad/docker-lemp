@@ -1,4 +1,4 @@
-FROM php:8.0.2-fpm-alpine AS build
+FROM php:7.4-fpm-alpine AS build
 
 # --- Install system dependencies and mariadb ---
 RUN (echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories) ; \
@@ -36,11 +36,18 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
         sockets \
         xsl \
         zip \
+        pcntl \
+        pdo_mysql \
+        gearman \
     ;
  
-# Override the default PHP configs
-COPY ./php/php.ini /etc/php8/conf.d/30-custom.ini
-COPY ./php/fpm.conf /etc/php8/php-fpm.d/www.custom.conf
+# Override the default PHP8 & FPM configs
+# COPY ./php/php.ini /etc/php8/conf.d/30-custom.ini
+# COPY ./php/fpm.conf /etc/php8/php-fpm.d/www.custom.conf
+
+# Override the default PHP7.4 & FPM configs
+# COPY ./php/php.ini /usr/local/etc/php/conf.d/zz-custom.ini
+# COPY ./php/fpm.conf /usr/local/etc/php-fpm.d/zz-zcustom.conf
 
 # Install Composer and WP CLI
 RUN \
@@ -180,7 +187,7 @@ WORKDIR /tmp
 RUN \
     # Install Filament
     rm -Rf /etc/nginx ; \ 
-    git clone https://github.com/cloudbitsio/nginx-configs.git /etc/nginx ; \
+    git clone https://github.com/cloudbitsio/filament.git /etc/nginx ; \
     ln -s /etc/nginx/templates/default.conf /etc/nginx/sites-enabled/default.conf ; \
     \
     # Copy NAXSI rules
@@ -231,8 +238,10 @@ RUN \
     # Delete the APK cache
     rm -rf /var/cache/apk/* ;
 
-# Ensure local volume for Nginx cache and expose ports
+# Ensure local volume for Nginx cache
 VOLUME ["/var/cache/nginx"]
+
+# Expose ports
 EXPOSE 80 443
 
 # --- Configure supervisord ---
