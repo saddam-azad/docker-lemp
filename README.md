@@ -1,11 +1,11 @@
 <p align="center">
   <a href="https://github.com/cloudbitsio/lightbulb-alpine"><img width="240" src="lightbulb.svg"></a>
 </p>
-<p>Docker container with NGINX and PHP.</p>
+<p align="center">Docker container with NGINX and PHP.</p>
 <p align="center">
-  <img src="https://img.shields.io/docker/v/cloudbitsio/lightbulb-alpine?color=999&sort=semver">
-  <img src="https://img.shields.io/docker/image-size/cloudbitsio/lightbulb-alpine?color=999&sort=semver">
-  <img src="https://img.shields.io/docker/pulls/cloudbitsio/lightbulb-alpine?color=999&sort=semver">
+  <img src="https://img.shields.io/docker/v/cloudbitsio/lightbulb-alpine?color=44CC11&sort=semver">
+  <img src="https://img.shields.io/docker/image-size/cloudbitsio/lightbulb-alpine?color=44CC11&sort=semver">
+  <img src="https://img.shields.io/docker/pulls/cloudbitsio/lightbulb-alpine?color=44CC11&sort=semver">
 </p>
 <p align="center">
   <a href="#docker-lemp">About</a> |
