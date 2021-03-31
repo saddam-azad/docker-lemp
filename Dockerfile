@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-alpine AS build
+FROM php:8.0.3-fpm-alpine AS build
 
 # --- Install system dependencies and mariadb ---
 RUN (echo "http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories) ; \
