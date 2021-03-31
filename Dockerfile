@@ -34,13 +34,13 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync && \
         opcache \
         redis \
         sockets \
+        soap \
         xsl \
         zip \
         pcntl \
         pdo_mysql \
         gearman \
     ;
- 
 # Override the default PHP8 & FPM configs
 # COPY ./php/php.ini /etc/php8/conf.d/30-custom.ini
 # COPY ./php/fpm.conf /etc/php8/php-fpm.d/www.custom.conf
